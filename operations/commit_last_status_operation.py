@@ -6,6 +6,10 @@ class CommitLastStatusOperation(AbstractOperation):
         super().__init__(api)
         self.stream_id = None
 
+    def stream_id(self, stream_id) -> "CommitLastStatusOperation":
+        self.stream_id = stream_id
+        return self
+
     def commit(self):
         xml = self.get_results()
 

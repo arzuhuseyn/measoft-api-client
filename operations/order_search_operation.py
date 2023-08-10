@@ -3,11 +3,12 @@ from xml.etree.ElementTree import Element as SimpleXMLElement
 
 
 from operations import AbstractOperation
+from operations.traits import Client, StreamId
 from api import MeasoftApi as Api
 from entities import Order
 
 
-class OrderSearchOperation(AbstractOperation):
+class OrderSearchOperation(AbstractOperation, StreamId, Client):
     def __init__(self, api: Api):
         super().__init__(api)
         self.orderNumber = None
@@ -51,35 +52,35 @@ class OrderSearchOperation(AbstractOperation):
 
     def done(self, done: int):
         self.done = {
-            1: 'ONLY_NOT_DONE',
-            2: 'ONLY_DONE',
-            3: 'ONLY_NEW',
-            4: 'ONLY_DELIVERY',
+            1: "ONLY_NOT_DONE",
+            2: "ONLY_DONE",
+            3: "ONLY_NEW",
+            4: "ONLY_DELIVERY",
         }.get(done, None)
         return self
 
     def only_last(self, only_last: bool = True):
-        self.onlyLast = 'ONLY_LAST' if only_last else None
+        self.onlyLast = "ONLY_LAST" if only_last else None
         return self
 
     def set_quick_status(self, quick_status: bool = True):
-        self.quickStatus = 'YES' if quick_status else 'NO'
+        self.quickStatus = "YES" if quick_status else "NO"
         return self
 
     def build_xml(self) -> SimpleXMLElement:
-        xml = self.create_xml('statusreq')
-        self.build_client_xml(xml)
-        xml.add_child('orderno', self.orderNumber)
-        xml.add_child('orderno2', self.orderNumber2)
-        xml.add_child('ordercode', self.orderCode)
-        xml.add_child('givencode', self.givenCode)
-        xml.add_child('datefrom', self.dateFrom)
-        xml.add_child('dateto', self.dateTo)
-        xml.add_child('target', self.target)
-        xml.add_child('done', self.done)
-        xml.add_child('changes', self.onlyLast)
-        xml.add_child('quickstatus', self.quickStatus)
-        self.build_stream_id_xml(xml)
+        xml = self.create_xml("statusreq")
+        xml = self.build_client_xml(xml)
+        xml.add_child("orderno", self.orderNumber)
+        xml.add_child("orderno2", self.orderNumber2)
+        xml.add_child("ordercode", self.orderCode)
+        xml.add_child("givencode", self.givenCode)
+        xml.add_child("datefrom", self.dateFrom)
+        xml.add_child("dateto", self.dateTo)
+        xml.add_child("target", self.target)
+        xml.add_child("done", self.done)
+        xml.add_child("changes", self.onlyLast)
+        xml.add_child("quickstatus", self.quickStatus)
+        xml = self.build_stream_id_xml(xml)
         return xml
 
     def search(self) -> List[Order]:

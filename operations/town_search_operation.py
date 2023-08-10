@@ -3,10 +3,11 @@ from xml.etree.ElementTree import Element as SimpleXMLElement
 
 from api import MeasoftApi as Api
 from operations import AbstractOperation
+from operations.traits import Limitable
 from entities import Town
 
 
-class TownSearchOperation(AbstractOperation):
+class TownSearchOperation(AbstractOperation, Limitable):
     def __init__(self, api: Api):
         super().__init__(api)
         self.zipCode = None
@@ -77,7 +78,7 @@ class TownSearchOperation(AbstractOperation):
         conditions.addChild("fullname", self.fullName)
         conditions.addChild("country", self.countryCode)
 
-        self.buildLimitXML(xml)
+        self.build_limit_xml(xml)
 
         return xml
 

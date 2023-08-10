@@ -39,9 +39,7 @@ class RegionSearchOperation(AbstractOperation):
         xml = self.create_xml("regionlist")
         codesearch = xml.add_child("codesearch")
         conditions = xml.add_child("conditions")
-
         codesearch.add_child("code", self.code)
-
         conditions.add_child("namecontains", self.name_contains)
         conditions.add_child("namestarts", self.name_starts)
         conditions.add_child("fullname", self.full_name)

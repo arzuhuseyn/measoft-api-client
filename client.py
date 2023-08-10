@@ -25,7 +25,6 @@ class MeasoftClient:
         countries = {}
         for region in self.region_search().search():
             countries[region.country.code] = region.country
-
         return list(countries.values())
 
     def region_search(self) -> RegionSearchOperation:

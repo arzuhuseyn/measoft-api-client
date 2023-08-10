@@ -63,5 +63,4 @@ class CalculatorOperation(AbstractOperation):
         result = []
         for item in self.get_results():
             result.append(CalculationResult.get_from_xml(item))
-
         return result

@@ -2,11 +2,12 @@ from typing import List
 from xml.etree.ElementTree import Element as SimpleXMLElement
 
 from operations import AbstractOperation
+from operations.traits import Limitable
 from api import MeasoftApi as Api
 from entities import Pvz
 
 
-class PvzSearchOperation(AbstractOperation):
+class PvzSearchOperation(AbstractOperation, Limitable):
     def __init__(self, api: Api):
         super().__init__(api)
         self.town = None
@@ -57,7 +58,7 @@ class PvzSearchOperation(AbstractOperation):
 
     def build_xml(self) -> SimpleXMLElement:
         xml = self.create_xml('pvzlist')
-        self.build_limit_xml(xml)
+        xml = self.build_limit_xml(xml)
 
         xml.add_child('town', self.town)
         xml.add_child('code', self.code)

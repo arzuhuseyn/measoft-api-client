@@ -4,10 +4,11 @@ from xml.etree.ElementTree import Element as SimpleXMLElement
 
 from operations import AbstractOperation
 from api import MeasoftApi as Api
+from operations.traits import Limitable
 from entities import Item
 
 
-class ItemSearchOperation(AbstractOperation):
+class ItemSearchOperation(AbstractOperation, Limitable):
     def __init__(self, api: Api):
         super().__init__(api)
         self.code: Optional[str] = None
@@ -67,7 +68,7 @@ class ItemSearchOperation(AbstractOperation):
             else "ALL",
         )
 
-        self.build_limit_xml(xml)
+        xml = self.build_limit_xml(xml)
 
         return xml
 
